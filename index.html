@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador de Frete</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Simulador de Frete</h1>
+    <p>Preencha os dados da carga e dos endereços para estimar o frete.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Dados da Simulação</h2>
+
+      <form class="freight-form">
+        <!-- DADOS DA NOTA -->
+        <fieldset>
+          <legend>Dados da Nota Fiscal</legend>
+
+          <div class="field">
+            <label for="valor-nf">Valor da NF (R$)</label>
+            <input type="number" id="valor-nf" name="valor_nf" step="0.01" min="0" required />
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="peso">Peso total (kg)</label>
+              <input type="number" id="peso" name="peso" step="0.01" min="0" required />
+            </div>
+
+            <div class="field">
+              <label for="volumes">Quantidade de volumes</label>
+              <input type="number" id="volumes" name="volumes" min="1" value="1" required />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="comprimento">Comprimento (cm)</label>
+              <input type="number" id="comprimento" name="comprimento" min="0" />
+            </div>
+            <div class="field">
+              <label for="largura">Largura (cm)</label>
+              <input type="number" id="largura" name="largura" min="0" />
+            </div>
+            <div class="field">
+              <label for="altura">Altura (cm)</label>
+              <input type="number" id="altura" name="altura" min="0" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="tipo-carga">Tipo de carga</label>
+              <select id="tipo-carga" name="tipo_carga">
+                <option value="quimica">Química</option>
+                <option value="geral">Carga geral</option>
+                <option value="perigosa">Perigosa</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="pagador">Pagador do frete</label>
+              <select id="pagador" name="pagador">
+                <option value="cif">CIF (Remetente)</option>
+                <option value="fob">FOB (Destinatário)</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- ENDEREÇO ORIGEM -->
+        <fieldset>
+          <legend>Origem</legend>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="cep-origem">CEP</label>
+              <input type="text" id="cep-origem" name="cep_origem" maxlength="9" placeholder="00000-000" required />
+            </div>
+            <div class="field">
+              <label for="uf-origem">UF</label>
+              <input type="text" id="uf-origem" name="uf_origem" maxlength="2" placeholder="SP" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cidade-origem">Cidade</label>
+            <input type="text" id="cidade-origem" name="cidade_origem" required />
+          </div>
+
+          <div class="field">
+            <label for="end-origem">Endereço completo</label>
+            <input type="text" id="end-origem" name="end_origem" />
+          </div>
+        </fieldset>
+
+        <!-- ENDEREÇO DESTINO -->
+        <fieldset>
+          <legend>Destino</legend>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="cep-destino">CEP</label>
+              <input type="text" id="cep-destino" name="cep_destino" maxlength="9" placeholder="00000-000" required />
+            </div>
+            <div class="field">
+              <label for="uf-destino">UF</label>
+              <input type="text" id="uf-destino" name="uf_destino" maxlength="2" placeholder="SP" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cidade-destino">Cidade</label>
+            <input type="text" id="cidade-destino" name="cidade_destino" required />
+          </div>
+
+          <div class="field">
+            <label for="end-destino">Endereço completo</label>
+            <input type="text" id="end-destino" name="end_destino" />
+          </div>
+        </fieldset>
+
+        <!-- CONFIGURAÇÕES -->
+        <fieldset>
+          <legend>Configurações de Frete</legend>
+
+          <div class="field-group">
+            <div class="field">
+              <label for="modalidade">Modalidade</label>
+              <select id="modalidade" name="modalidade">
+                <option value="fracionado">Rodoviário Fracionado</option>
+                <option value="lotacao">Rodoviário Lotação</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="servico">Tipo de serviço</label>
+              <select id="servico" name="servico">
+                <option value="padrao">Padrão</option>
+                <option value="expresso">Expresso</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit">Verificar frete</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Simulador de frete &mdash; protótipo</small>
+  </footer>
+</body>
+</html>

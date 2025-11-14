@@ -1,0 +1,215 @@
+:root {
+  --bg: #1a2333; /* Fundo mais claro */
+  --card-bg: #334463; /* Card mais claro */
+  --input-bg: #0f172a; /* Inputs levemente mais claros */
+  --accent: #38bdf8; /* Azul-claro moderno */
+  --accent-hover: #0ea5e9;
+  --text: #f1f5f9; /* Texto mais claro */
+  --muted: #cbd5e1;
+  --border: #99b7e0; /* Bordas mais perceptíveis */
+  --radius: 12px;
+  --gap: 1rem;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --transition: 0.18s ease-out;
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: linear-gradient(130deg, #1e293b 0%, #0f172a 100%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======================== */
+/* Topo */
+/* ======================== */
+
+.topbar {
+  padding: 1.5rem 1rem 0.8rem;
+  text-align: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.4rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.topbar p {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* ======================== */
+/* Card principal */
+/* ======================== */
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 960px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* ======================== */
+/* Fieldsets */
+/* ======================== */
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03); /* divisória mais clara */
+}
+
+legend {
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ======================== */
+/* Inputs e Selects */
+/* ======================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+}
+
+.field-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+.field label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+input,
+select {
+  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.65rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition),
+    box-shadow var(--transition), transform var(--transition);
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+input:hover,
+select:hover {
+  background: #152238;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.5);
+  transform: translateY(-1px);
+  background: #122033;
+}
+
+/* ======================== */
+/* Botão */
+/* ======================== */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), #7dd3fc);
+  color: #0f172a;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.45);
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ======================== */
+/* Rodapé */
+/* ======================== */
+
+.footer {
+  text-align: center;
+  padding: 1.2rem 1rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ======================== */
+/* Responsivo */
+/* ======================== */
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.4rem 1.1rem;
+  }
+
+  .field-group {
+    grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
+  }
+}
