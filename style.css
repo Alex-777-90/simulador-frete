@@ -30,6 +30,27 @@ body {
   flex-direction: column;
 }
 
+
+.calculateTrans {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;              /* controla o espaço ENTRE as imagens */
+    padding: 0;             /* remove espaço interno */
+
+}
+
+.calculateTrans img {
+    width: 140px !important;   /* força o tamanho real da imagem */
+    height: auto !important;
+    object-fit: contain;
+}
+
+.img_link {
+    margin: 0;              /* remove margin extra */
+    padding: 0;
+}
+
 /* ======================== */
 /* Topo */
 /* ======================== */
