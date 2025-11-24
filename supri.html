@@ -3,27 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cálculo de Frete - Supri Log</title>
+  <title>Simulador Supri - Dedicado</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topbar">
-    <h1>Cálculo de Frete - Supri Log</h1>
-    <p>Resumo da simulação com base na tabela dedicada da Supri.</p>
+    <h1>Simulação Supri Logística</h1>
+    <p>Resultado do cálculo de frete dedicado (lotação).</p>
   </header>
 
   <main>
     <section class="card">
-      <div id="resultado-frete"></div>
+      <h2>Resumo da Simulação</h2>
+
+      <p id="erro-supri" style="color:#b00020;font-weight:bold;"></p>
+
+      <div id="bloco-resultado-supri">
+        <div class="field-group">
+          <div class="field">
+            <strong>Origem:</strong>
+            <span id="supri-origem"></span>
+          </div>
+          <div class="field">
+            <strong>Destino:</strong>
+            <span id="supri-destino"></span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field">
+            <strong>Veículo:</strong>
+            <span id="supri-veiculo"></span>
+          </div>
+          <div class="field">
+            <strong>Peso (kg):</strong>
+            <span id="supri-peso"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <strong>Valor da NF:</strong>
+          <span id="supri-valor-nf"></span>
+        </div>
+
+        <hr />
+
+        <h3>Componentes do frete (valores líquidos)</h3>
+        <ul class="lista-valores">
+          <li>Frete peso: <span id="supri-frete-peso"></span></li>
+          <li>Frete valor (Ad valorem): <span id="supri-frete-valor"></span></li>
+          <li>Taxa CTRC: <span id="supri-taxa-ctrc"></span></li>
+          <li>Pedágio: <span id="supri-pedagio"></span></li>
+        </ul>
+
+        <p><strong>Total líquido:</strong> <span id="supri-total-liquido"></span></p>
+
+        <h3>ICMS</h3>
+        <ul class="lista-valores">
+          <li>Fator (líquido/bruto): <span id="supri-icms-aliq"></span></li>
+          <li>Valor ICMS (por dentro): <span id="supri-icms-valor"></span></li>
+        </ul>
+
+        <p><strong>Total bruto (estimado CT-e):</strong> <span id="supri-total-bruto"></span></p>
+      </div>
+
+      <p id="resultado-supri"></p>
 
       <div class="actions">
-        <a href="index.html" class="btn-voltar">Voltar para simulação</a>
+        <a href="index.html" class="btn-voltar">← Nova simulação</a>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <small>Simulador de frete &mdash; protótipo</small>
+    <small>Simulador de frete — Supri (dedicado)</small>
   </footer>
 
   <script src="supri.js"></script>
