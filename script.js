@@ -1,56 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('freight-form');
   const levanteLink = document.getElementById('levante-link');
+  const supriLink = document.getElementById('supri-link');
   const valorInput = document.getElementById('valor-nf');
 
-  // --- MÁSCARA pt-BR PARA VALOR DA NF (ex: 18.402,42) ---
+  // --- MÁSCARA pt-BR PARA VALOR DA NF ---
   if (valorInput) {
     valorInput.addEventListener('input', (e) => {
       let v = e.target.value;
-
-      // mantém só dígitos
       v = v.replace(/\D/g, '');
-
       if (v === '') {
         e.target.value = '';
         return;
       }
-
-      // transforma em centavos
       v = (parseInt(v, 10) / 100).toFixed(2) + '';
-
-      // vírgula como separador decimal
       v = v.replace('.', ',');
-
-      // pontos de milhar
       v = v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
       e.target.value = v;
     });
   }
 
-  // --- CLIQUE NO LOGO DA LEVANTE ---
+  function abrirSimulacao(nomePagina) {
+    if (!form.reportValidity()) return;
+
+    const formData = new FormData(form);
+    const params = new URLSearchParams();
+    for (const [key, value] of formData.entries()) {
+      params.append(key, value);
+    }
+
+    window.location.href = `${nomePagina}?${params.toString()}`;
+  }
+
   if (levanteLink) {
-    levanteLink.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      // validação HTML5
-      if (!form.reportValidity()) {
-        return;
-      }
-
-      const formData = new FormData(form);
-      formData.append('transportadora', 'levante');
-
-      const params = new URLSearchParams();
-      for (const [key, value] of formData.entries()) {
-        params.append(key, value);
-      }
-
-      window.location.href = `levante.html?${params.toString()}`;
+    levanteLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      abrirSimulacao('levante.html');
     });
   }
 
-  // Futuro: implementar Supri
-  // const supriLink = document.getElementById('supri-link');
+  if (supriLink) {
+    supriLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      abrirSimulacao('supri.html');
+    });
+  }
+
+  // botão "Verificar frete" continua funcionando normal (se quiser)
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // por padrão, vamos abrir a Levante
+      abrirSimulacao('levante.html');
+    });
+  }
 });

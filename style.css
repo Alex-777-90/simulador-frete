@@ -51,6 +51,11 @@ body {
     padding: 0;
 }
 
+.img_link:hover {
+   background-color: #7dd3fc;
+}
+
+
 /* ======================== */
 /* Topo */
 /* ======================== */
