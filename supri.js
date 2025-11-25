@@ -1,5 +1,16 @@
 // supri.js
 
+// Função para converter valor brasileiro (1.234.567,89) em número JS
+function parseValorBR(str) {
+  if (!str) return 0;
+  if (typeof str !== "string") return Number(str) || 0;
+  return Number(
+    str
+      .replace(/\./g, "")   // remove pontos de milhar
+      .replace(",", ".")    // troca vírgula por ponto
+  ) || 0;
+}
+
 // ----------------------
 // Constantes fiscais
 // ----------------------
@@ -48,7 +59,8 @@ const SUPRI_DEDICADO_TABELA = [
 ];
 
 // ----------------------
-// Tabela Pedágio (aba "Pedagio", opção A = Pedagio NOVO)
+// Tabela Pedágio (aba "Pedagio"
+// opção A = Pedagio NOVO)
 // ----------------------
 const SUPRI_PEDAGIO_TABELA = [
   // TOCO
@@ -64,7 +76,6 @@ const SUPRI_PEDAGIO_TABELA = [
   { veiculo: "TRUCK", origem: "RIO CLARO", destino: "PAULINIA",        pedagioNovo: 144.9,  inclusao: false },
   { veiculo: "TRUCK", origem: "RIO CLARO", destino: "SANTO ANDRE",     pedagioNovo: 292.9,  inclusao: false },
   { veiculo: "TRUCK", origem: "SÃO PAULO", destino: "RIO CLARO",       pedagioNovo: 292.8,  inclusao: false },
-  { veiculo: "TRUCK", origem: "SOROCABA",  destino: "RIO CLARO",       pedagioNovo: 171.3,  inclusao: false },
 
   // TRUCK com INCLUSÃO (pedágio já incluso no frete)
   { veiculo: "TRUCK", origem: "SC",        destino: "MAUÁ",            pedagioNovo: 121.8,  inclusao: true  },
@@ -102,7 +113,6 @@ function normalizarTexto(str) {
 function escolherVeiculo(peso, linha) {
   const p = Number(peso) || 0;
 
-  // Faixas padrão (podemos ajustar depois se você quiser outra regra)
   const veiculos = [];
 
   if (linha.toco && linha.toco > 0) {
@@ -118,7 +128,7 @@ function escolherVeiculo(peso, linha) {
     veiculos.push({ tipo: "CARRETA ESTENDIDA", valor: linha.carretaEstendida, min: 8000, max: 40000 });
   }
 
-  if (veiculos.length === 0) return null;
+  if (veiculos.length == 0) return null;
 
   // Primeiro tenta respeitar faixas de peso
   let escolhido = veiculos.find(v => p >= v.min && p <= v.max);
@@ -171,7 +181,7 @@ function encontrarPedagio(veiculo, origem, destino) {
 // Cálculo principal (DEDICADO)
 // ----------------------
 function calcularFreteSupriDedicated(params) {
-  const valorNF   = Number(params.valor_nf || 0);
+  const valorNF   = parseValorBR(params.valor_nf);   // <<< CORRIGIDO
   const peso      = Number(params.peso || 0);
   const origem    = params.cidade_origem || "";
   const destino   = params.cidade_destino || "";
