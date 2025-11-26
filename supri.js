@@ -45,7 +45,7 @@ const SUPRI_DEDICADO_TABELA = [
   { origem: "*MAUÁ",     destino: "RIO CLARO",       toco: 0.0,       truck: 3139.1782, carreta: 3944.819,   carretaEstendida: 3944.819 },
 
   { origem: "** ITAJAI", destino: "TRIUNFO",         toco: 0.0,       truck: 4278.3481, carreta: 5709.2347,  carretaEstendida: 0.0 },
-  { origem: "TRIUNFO",   destino: "TRIUNFO",         toco: 0.0,       truck: 0.0,       carreta: 2854.6228,  carretaEstendida: 0.0 },
+  { origem: "*MAUÁ",     destino: "TRIUNFO",         toco: 0.0,       truck: 114.60,    carreta: 2854.6228,  carretaEstendida: 0.0 },
 
   { origem: "*MAUÁ",     destino: "PAULINIA",        toco: 2168.4024, truck: 2602.0807, carreta: 3938.0828,  carretaEstendida: 3938.1155 },
   { origem: "RIO CLARO", destino: "PAULINIA",        toco: 0.0,       truck: 1886.79,   carreta: 2382.5874,  carretaEstendida: 2851.1784 },
