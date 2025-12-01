@@ -83,7 +83,7 @@
             </div>
           </div>
 
-          <div class="field-group">
+          <div class="field-group hide-temp">
             <div class="field">
               <label for="tipo-carga">Tipo de carga</label>
               <select id="tipo-carga" name="tipo_carga">
@@ -221,6 +221,19 @@
             </div>
           </div>
         </fieldset>
+
+      <div class="actions">
+        <button type="submit">Verificar frete</button>
+
+        <!-- MENU SUSPENSO ABERTO AO CLICAR NO BOTÃO -->
+        <div id="menu-opcoes" class="menu-opcoes hidden">
+          <ul>
+            <li onclick="selecionarOpcao('AGRO')">AGRO</li>
+            <li onclick="selecionarOpcao('ADITIVO')">ADITIVO</li>
+            <li onclick="selecionarOpcao('BLENDA')">BLENDA</li>
+          </ul>
+        </div>
+    </div>
 
       </form>
     </section>

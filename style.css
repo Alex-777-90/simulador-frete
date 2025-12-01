@@ -30,31 +30,32 @@ body {
   flex-direction: column;
 }
 
+/* ======================== */
+/* LOGOS TRANSPORTADORAS */
+/* ======================== */
 
 .calculateTrans {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;              /* controla o espaço ENTRE as imagens */
-    padding: 0;             /* remove espaço interno */
-
+    gap: 10px;
+    padding: 0;
 }
 
 .calculateTrans img {
-    width: 140px !important;   /* força o tamanho real da imagem */
+    width: 140px !important;
     height: auto !important;
     object-fit: contain;
 }
 
 .img_link {
-    margin: 0;              /* remove margin extra */
+    margin: 0;
     padding: 0;
 }
 
 .img_link:hover {
    background-color: #7dd3fc;
 }
-
 
 /* ======================== */
 /* Topo */
@@ -115,7 +116,7 @@ fieldset {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.03); /* divisória mais clara */
+  background: rgba(255, 255, 255, 0.03);
 }
 
 legend {
@@ -179,13 +180,14 @@ select:focus {
 }
 
 /* ======================== */
-/* Botão */
+/* BOTÃO + MENU SUSPENSO */
 /* ======================== */
 
 .actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 0.5rem;
+  position: relative; /* necessário para o menu ficar preso ao botão */
 }
 
 button {
@@ -212,14 +214,61 @@ button:active {
 }
 
 /* ======================== */
-/* Rodapé */
+/* MENU SUSPENSO (animação suave) */
 /* ======================== */
 
-.footer {
+.menu-opcoes {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+
+  width: 260px;
+  background-color: #1d2a3b;
+  border: 1px solid #3da9ff;
+  border-radius: 8px;
+  padding: 10px 0;
+  box-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+  z-index: 10;
+
+  /* estado inicial invisível, para animar */
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.menu-opcoes.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.menu-opcoes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-opcoes li {
+  padding: 12px;
   text-align: center;
-  padding: 1.2rem 1rem;
-  font-size: 0.85rem;
-  color: var(--muted);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 18px;
+}
+
+.menu-opcoes li:hover {
+  background-color: #3da9ff;
+  color: #000;
+}
+
+/* oculta campos ======================== */
+.hide-temp {
+  display: none !important;
 }
 
 /* ======================== */
@@ -236,6 +285,11 @@ button:active {
   }
 
   button {
+    width: 100%;
+  }
+
+  .menu-opcoes {
+    right: 0;
     width: 100%;
   }
 }

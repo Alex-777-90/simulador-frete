@@ -1,3 +1,5 @@
+let menuOpcoesGlobal = null; // usado pela função selecionarOpcao
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('freight-form');
   const levanteLink = document.getElementById('levante-link');
@@ -319,4 +321,45 @@ document.addEventListener('DOMContentLoaded', () => {
       abrirSimulacao('levante.html');
     });
   }
+
+  // ------------------------------------
+  // MENU SUSPENSO DO BOTÃO "VERIFICAR FRETE"
+  // ------------------------------------
+  const botaoFrete = document.querySelector(".actions button");
+  const menuOpcoes = document.getElementById("menu-opcoes");
+  menuOpcoesGlobal = menuOpcoes;
+
+  if (botaoFrete && menuOpcoes) {
+    botaoFrete.addEventListener("click", function (e) {
+      e.preventDefault(); // impede submit imediato
+      menuOpcoes.classList.toggle("show");
+    });
+
+    // (opcional) fecha o menu se clicar fora
+    document.addEventListener("click", function (event) {
+      if (!menuOpcoes.classList.contains("show")) return;
+
+      const clickedInsideMenu = menuOpcoes.contains(event.target);
+      const clickedButton = botaoFrete.contains(event.target);
+
+      if (!clickedInsideMenu && !clickedButton) {
+        menuOpcoes.classList.remove("show");
+      }
+    });
+  }
 });
+
+// Ação ao clicar em AGRO / ADITIVO / BLENDA
+function selecionarOpcao(opcao) {
+  alert("Você selecionou: " + opcao);
+
+  if (menuOpcoesGlobal) {
+    menuOpcoesGlobal.classList.remove("show");
+  }
+
+  // Aqui você coloca qualquer ação que desejar
+  // Exemplo de redirecionamento por opção:
+  // if (opcao === "AGRO")   window.location.href = "agro.html";
+  // if (opcao === "ADITIVO") window.location.href = "aditivo.html";
+  // if (opcao === "BLENDA")  window.location.href = "blenda.html";
+}
