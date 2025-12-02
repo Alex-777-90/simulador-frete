@@ -4,6 +4,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('freight-form');
   const valorInput = document.getElementById('valor-nf');
 
+  // CAMPOS DE MEDIDA
+  const comprimentoInput = document.getElementById('comprimento');
+  const larguraInput = document.getElementById('largura');
+  const alturaInput = document.getElementById('altura');
+  const fornecedorSelect = document.getElementById('fornecedor-medida');
+
+  // =====================================================================
+  // TABELA DE MEDIDAS POR FORNECEDOR (baseada na imagem que você mandou)
+  // A x L x C
+  // =====================================================================
+  const medidasPorFornecedor = [
+    { id: 'songwon_1', fornecedor: 'Songwon', comprimento: 10, largura: 40, altura: 60 },
+    { id: 'songwon_2', fornecedor: 'Songwon', comprimento: 35, largura: 35, altura: 50 },
+    { id: 'fine_1',     fornecedor: 'Fine',    comprimento: 20, largura: 30, altura: 70 },
+    { id: 'fine_2',     fornecedor: 'Fine',    comprimento: 40, largura: 40, altura: 40 },
+    { id: 'sabo_1',     fornecedor: 'Sabo',    comprimento: 15, largura: 40, altura: 65 },
+    { id: 'sabo_2',     fornecedor: 'Sabo',    comprimento: 15, largura: 45, altura: 80 },
+    { id: 'songwon_3',  fornecedor: 'Songwon', comprimento: 30, largura: 30, altura: 70 },
+    { id: 'viba_1',     fornecedor: 'Viba',    comprimento: 10, largura: 40, altura: 60 }
+  ];
+
+  // Preenche o select de fornecedor com as combinações
+  if (fornecedorSelect && comprimentoInput && larguraInput && alturaInput) {
+    medidasPorFornecedor.forEach((m) => {
+      const opt = document.createElement('option');
+      opt.value = m.id;
+      opt.textContent = `${m.fornecedor} – ${m.comprimento} x ${m.largura} x ${m.altura}`;
+      fornecedorSelect.appendChild(opt);
+    });
+
+    fornecedorSelect.addEventListener('change', () => {
+      const selecionado = medidasPorFornecedor.find(m => m.id === fornecedorSelect.value);
+      if (!selecionado) return;
+
+      comprimentoInput.value = selecionado.comprimento;
+      larguraInput.value = selecionado.largura;
+      alturaInput.value = selecionado.altura;
+    });
+  }
+
   // ----------------------------------------------------------------
   // CONTROLES PARA BLOQUEAR ViaCEP quando origem/destino vem do JSON
   // ----------------------------------------------------------------
@@ -195,22 +235,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // -----------------------------------------------------------
   // 🔵 DESTINO (CLIENTE) → Clientes.json (novo formato)
-  //   - formato: [ [header...], [linha1...], [linha2...] ]
-  //   - ordena alfabeticamente
-  //   - adiciona campo de busca por nome
-  //   - usa "Nome estrangeiro" (fallback para outros campos)
-  //   - CEP vem do JSON e é corrigido com zero à esquerda
-  //   - Endereço vem da coluna "Endereço"
   // -----------------------------------------------------------
   let listaClientes = [];
 
-  fetch("Clientes.json") // novo arquivo em formato tabular
+  fetch("Clientes.json")
     .then(res => res.json())
     .then(json => {
       if (!Array.isArray(json) || json.length < 2) return;
 
-      const header = json[0];       // primeira linha = nomes de coluna
-      const linhas = json.slice(1); // demais linhas = registros
+      const header = json[0];
+      const linhas = json.slice(1);
 
       // converte cada linha em objeto {coluna: valor}
       listaClientes = linhas.map(linha => {
@@ -221,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return obj;
       });
 
-      // guarda e ordena alfabeticamente
+      // ordena alfabeticamente
       listaClientes.sort((a, b) => {
         const nomeA = (
           a["Nome estrangeiro"] ||
@@ -242,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return nomeA.localeCompare(nomeB);
       });
 
-      // cria input de busca acima do select (sem mexer no HTML)
+      // campo de busca acima do select
       const inputBusca = document.createElement("input");
       inputBusca.type = "text";
       inputBusca.placeholder = "Digite para buscar o cliente";
@@ -252,11 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selectDestino.parentNode.insertBefore(inputBusca, selectDestino);
       }
 
-      // função para preencher o select (com ou sem filtro)
       function preencherSelectClientes(filtroTexto = "") {
         const textoFiltro = removeAcentos(filtroTexto.toUpperCase());
-
-        // limpa e recria opção padrão
         selectDestino.innerHTML = '<option value="">Selecione um cliente</option>';
 
         listaClientes.forEach((cli, index) => {
@@ -275,26 +306,22 @@ document.addEventListener('DOMContentLoaded', () => {
           const nomeNormalizado = removeAcentos(nome.toUpperCase());
 
           if (textoFiltro && !nomeNormalizado.includes(textoFiltro)) {
-            return; // não entra no filtro
+            return;
           }
 
           const opt = document.createElement("option");
-          // value = índice na lista ordenada
           opt.value = index;
           opt.textContent = nome;
           selectDestino.appendChild(opt);
         });
       }
 
-      // preenche inicialmente sem filtro
       preencherSelectClientes("");
 
-      // evento de digitação no campo de busca
       inputBusca.addEventListener("input", () => {
         preencherSelectClientes(inputBusca.value);
       });
 
-      // quando selecionar um cliente
       selectDestino.addEventListener("change", () => {
         const idx = selectDestino.value;
         if (idx === "") return;
@@ -306,22 +333,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const uf = cli["UF"] ? cli["UF"].toString().trim() : "";
         const cidade = cli["Cidade"] ? cli["Cidade"].toString() : "";
         const cepJson = normalizeCEPFromJson(cli["CEP"]);
-        const endereco = cli["ENDERECO"] ? cli["ENDERECO"].toString() : ""; // 🔹 NOVO
+        const endereco = cli["ENDERECO"] ? cli["ENDERECO"].toString() : "";
 
         const ufInput = document.getElementById("uf-destino");
         const cidadeInput = document.getElementById("cidade-destino");
         const cepInput = document.getElementById("cep-destino");
         const endInput = document.getElementById("end-destino");
 
-        // UF e Cidade vindos do JSON (sem acento e em maiúsculo)
         if (ufInput) ufInput.value = removeAcentos(toUpper(uf));
         if (cidadeInput) cidadeInput.value = removeAcentos(toUpper(cidade));
-
-        // CEP vindo do JSON (corrigido com zero à esquerda)
         if (cepInput) cepInput.value = cepJson;
-
-        // Endereço vindo do JSON, maiúsculo e sem acento
-        if (endInput) endInput.value = removeAcentos(toUpper(endereco)); // 🔹 NOVO
+        if (endInput) endInput.value = removeAcentos(toUpper(endereco));
       });
     });
 
@@ -334,11 +356,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (botaoFrete && menuOpcoes) {
     botaoFrete.addEventListener("click", function (e) {
-      e.preventDefault(); // impede submit imediato
+      e.preventDefault();
       menuOpcoes.classList.toggle("show");
     });
 
-    // fecha o menu se clicar fora
     document.addEventListener("click", function (event) {
       if (!menuOpcoes.classList.contains("show")) return;
 
@@ -359,7 +380,6 @@ function selecionarTransportadora(tipo) {
   const form = document.getElementById("freight-form");
   if (!form) return;
 
-  // valida campos do formulário
   if (!form.reportValidity()) {
     if (menuOpcoesGlobal) menuOpcoesGlobal.classList.remove("show");
     return;
@@ -376,7 +396,6 @@ function selecionarTransportadora(tipo) {
   } else if (tipo === "SUPRI") {
     window.location.href = "supri.html?" + params.toString();
   } else {
-    // futuros cálculos específicos
     alert("Função ainda não implementada para: " + tipo);
   }
 
@@ -385,7 +404,6 @@ function selecionarTransportadora(tipo) {
   }
 }
 
-// Alias para não quebrar nada se alguma <li> ainda chamar selecionarOpcao()
 function selecionarOpcao(opcao) {
   selecionarTransportadora(opcao);
 }
