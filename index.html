@@ -16,18 +16,6 @@
     <section class="card">
       <h2>Dados da Simulação</h2>
 
-      <div class="actions">
-        <button type="submit" id="btn-verificar">Simular frete</button>
-
-        <div id="menu-opcoes" class="menu-opcoes">
-            <ul>
-                <!-- Se quiser manter AGRO, ADITIVO, BLENDA -->
-                <li onclick="selecionarTransportadora('LEVANTE')">AGRO</li>
-                <li onclick="selecionarTransportadora('LEVANTE')">ADITIVO</li>
-                <li onclick="selecionarTransportadora('LEVANTE')">BLENDA</li>
-            </ul>
-        </div>
-    </div>
 
     <!--
           <div class="actions">
@@ -251,9 +239,24 @@
                 <option value="expresso">Expresso</option>
               </select>
             </div>
+
+            <div class="actions">
+              <button type="submit" id="btn-verificar">Simular frete</button>
+
+              <div id="menu-opcoes" class="menu-opcoes">
+                  <ul>
+                      <!-- Se quiser manter AGRO, ADITIVO, BLENDA -->
+                      <li onclick="selecionarTransportadora('LEVANTE')">AGRO</li>
+                      <li onclick="selecionarTransportadora('LEVANTE')">ADITIVO</li>
+                      <li onclick="selecionarTransportadora('LEVANTE')">BLENDA</li>
+                  </ul>
+              </div>
+            </div>
           </div>
         </fieldset>
-
+        
+        
+     
 
       </form>
     </section>
