@@ -25,12 +25,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------
-  // FORMATAÇÃO DE CEP -> 00000-000
+  // FORMATAÇÃO DE CEP PARA DIGITAÇÃO -> 00000-000
   function formatCEP(value) {
     let v = (value || "").replace(/\D/g, "");
     if (v.length > 8) v = v.slice(0, 8);
     if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
     return v;
+  }
+
+  // ------------------------------------
+  // NORMALIZAR CEP VINDO DO JSON (adicionar zero à esquerda)
+  // ------------------------------------
+  function normalizeCEPFromJson(cepValor) {
+    let v = (cepValor ?? "").toString().replace(/\D/g, "");
+
+    if (!v) return "";
+
+    // se vier com menos de 8 dígitos, completa com zero à esquerda
+    if (v.length < 8) {
+      v = v.padStart(8, "0");
+    } else if (v.length > 8) {
+      // se por acaso vier maior, pega os 8 últimos
+      v = v.slice(-8);
+    }
+
+    // devolve já no formato 00000-000
+    return v.slice(0, 5) + "-" + v.slice(5);
   }
 
   // ------------------------------------
@@ -174,19 +194,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   // -----------------------------------------------------------
-  // 🔵 DESTINO (CLIENTE) → clientes.json
+  // 🔵 DESTINO (CLIENTE) → Clientes.json (novo formato)
+  //   - formato: [ [header...], [linha1...], [linha2...] ]
   //   - ordena alfabeticamente
   //   - adiciona campo de busca por nome
   //   - usa "Nome estrangeiro" (fallback para outros campos)
-  //   - CEP e Endereço ficam zerados
+  //   - CEP vem do JSON e é corrigido com zero à esquerda
   // -----------------------------------------------------------
   let listaClientes = [];
 
-  fetch("clientes.json")
+  fetch("Clientes.json") // novo arquivo em formato tabular
     .then(res => res.json())
-    .then(clientes => {
+    .then(json => {
+      if (!Array.isArray(json) || json.length < 2) return;
+
+      const header = json[0];       // primeira linha = nomes de coluna
+      const linhas = json.slice(1); // demais linhas = registros
+
+      // converte cada linha em objeto {coluna: valor}
+      listaClientes = linhas.map(linha => {
+        const obj = {};
+        header.forEach((col, i) => {
+          obj[col] = linha[i];
+        });
+        return obj;
+      });
+
       // guarda e ordena alfabeticamente
-      listaClientes = clientes.slice().sort((a, b) => {
+      listaClientes.sort((a, b) => {
         const nomeA = (
           a["Nome estrangeiro"] ||
           a["Nome do PN"] ||
@@ -269,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const uf = cli["UF"] ? cli["UF"].toString().trim() : "";
         const cidade = cli["Cidade"] ? cli["Cidade"].toString() : "";
+        const cepJson = normalizeCEPFromJson(cli["CEP"]);
 
         const ufInput = document.getElementById("uf-destino");
         const cidadeInput = document.getElementById("cidade-destino");
@@ -279,8 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ufInput) ufInput.value = removeAcentos(toUpper(uf));
         if (cidadeInput) cidadeInput.value = removeAcentos(toUpper(cidade));
 
-        // CEP e Endereço ficam zerados por enquanto
-        if (cepInput) cepInput.value = "";
+        // CEP vindo do JSON (corrigido com zero à esquerda)
+        if (cepInput) cepInput.value = cepJson;
+
+        // Endereço ainda em branco (até você colocar no JSON)
         if (endInput) endInput.value = "";
       });
     });
