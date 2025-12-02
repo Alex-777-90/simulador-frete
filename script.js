@@ -1,9 +1,7 @@
-let menuOpcoesGlobal = null; // usado pela função selecionarOpcao
+let menuOpcoesGlobal = null; // usado pelo menu suspenso
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('freight-form');
-  const levanteLink = document.getElementById('levante-link');
-  const supriLink = document.getElementById('supri-link');
   const valorInput = document.getElementById('valor-nf');
 
   // ----------------------------------------------------------------
@@ -288,41 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   // ------------------------------------
-  // NAVEGAÇÃO LEVANTE / SUPRI
-  // ------------------------------------
-  function abrirSimulacao(nomePagina) {
-    if (!form.reportValidity()) return;
-
-    const formData = new FormData(form);
-    const params = new URLSearchParams();
-    for (const [k, v] of formData.entries()) {
-      params.append(k, v);
-    }
-    window.location.href = `${nomePagina}?${params.toString()}`;
-  }
-
-  if (levanteLink) {
-    levanteLink.addEventListener('click', e => {
-      e.preventDefault();
-      abrirSimulacao('levante.html');
-    });
-  }
-
-  if (supriLink) {
-    supriLink.addEventListener('click', e => {
-      e.preventDefault();
-      abrirSimulacao('supri.html');
-    });
-  }
-
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      abrirSimulacao('levante.html');
-    });
-  }
-
-  // ------------------------------------
   // MENU SUSPENSO DO BOTÃO "VERIFICAR FRETE"
   // ------------------------------------
   const botaoFrete = document.querySelector(".actions button");
@@ -335,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menuOpcoes.classList.toggle("show");
     });
 
-    // (opcional) fecha o menu se clicar fora
+    // fecha o menu se clicar fora
     document.addEventListener("click", function (event) {
       if (!menuOpcoes.classList.contains("show")) return;
 
@@ -349,17 +312,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Ação ao clicar em AGRO / ADITIVO / BLENDA
-function selecionarOpcao(opcao) {
-  alert("Você selecionou: " + opcao);
+// -----------------------------------------------------------
+// AÇÃO AO CLICAR NO ITEM DO MENU (LEVANTE / SUPRI / AGRO ...)
+// -----------------------------------------------------------
+function selecionarTransportadora(tipo) {
+  const form = document.getElementById("freight-form");
+  if (!form) return;
+
+  // valida campos do formulário
+  if (!form.reportValidity()) {
+    if (menuOpcoesGlobal) menuOpcoesGlobal.classList.remove("show");
+    return;
+  }
+
+  const formData = new FormData(form);
+  const params = new URLSearchParams();
+  for (const [k, v] of formData.entries()) {
+    params.append(k, v);
+  }
+
+  if (tipo === "LEVANTE") {
+    window.location.href = "levante.html?" + params.toString();
+  } else if (tipo === "SUPRI") {
+    window.location.href = "supri.html?" + params.toString();
+  } else {
+    // futuros cálculos específicos
+    alert("Função ainda não implementada para: " + tipo);
+  }
 
   if (menuOpcoesGlobal) {
     menuOpcoesGlobal.classList.remove("show");
   }
+}
 
-  // Aqui você coloca qualquer ação que desejar
-  // Exemplo de redirecionamento por opção:
-  // if (opcao === "AGRO")   window.location.href = "agro.html";
-  // if (opcao === "ADITIVO") window.location.href = "aditivo.html";
-  // if (opcao === "BLENDA")  window.location.href = "blenda.html";
+// Alias para não quebrar nada se alguma <li> ainda chamar selecionarOpcao()
+function selecionarOpcao(opcao) {
+  selecionarTransportadora(opcao);
 }

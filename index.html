@@ -16,15 +16,22 @@
     <section class="card">
       <h2>Dados da Simulação</h2>
 
-      <div class="calculateTrans">
-        <a href="#" id="levante-link">
-          <img class="img_link" src="./logo-removebg.png"
-               alt="Imagem Levante" title="Cálculo Levante (J&J)">
-        </a>
-        <a href="#" id="supri-link">
-          <img class="img_link" src="./images-removebg.png"
-               alt="Imagem Supri" title="Cálculo Supri Log">
-        </a>
+      <div class="actions">
+        <button type="submit" id="btn-verificar">Verificar frete</button>
+
+        <div id="menu-opcoes" class="menu-opcoes">
+            <ul>
+                <li onclick="selecionarTransportadora('LEVANTE')">LEVANTE</li>
+                <li onclick="selecionarTransportadora('SUPRI')">SUPRI</li>
+
+                <!-- Se quiser manter AGRO, ADITIVO, BLENDA -->
+                <li onclick="selecionarTransportadora('AGRO')">AGRO</li>
+                <li onclick="selecionarTransportadora('ADITIVO')">ADITIVO</li>
+                <li onclick="selecionarTransportadora('BLENDA')">BLENDA</li>
+            </ul>
+        </div>
+    </div>
+
       </div>
     
       <form class="freight-form" id="freight-form">
@@ -222,18 +229,6 @@
           </div>
         </fieldset>
 
-      <div class="actions">
-        <button type="submit">Verificar frete</button>
-
-        <!-- MENU SUSPENSO ABERTO AO CLICAR NO BOTÃO -->
-        <div id="menu-opcoes" class="menu-opcoes hidden">
-          <ul>
-            <li onclick="selecionarOpcao('AGRO')">AGRO</li>
-            <li onclick="selecionarOpcao('ADITIVO')">ADITIVO</li>
-            <li onclick="selecionarOpcao('BLENDA')">BLENDA</li>
-          </ul>
-        </div>
-    </div>
 
       </form>
     </section>
