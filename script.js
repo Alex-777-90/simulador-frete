@@ -200,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //   - adiciona campo de busca por nome
   //   - usa "Nome estrangeiro" (fallback para outros campos)
   //   - CEP vem do JSON e é corrigido com zero à esquerda
+  //   - Endereço vem da coluna "Endereço"
   // -----------------------------------------------------------
   let listaClientes = [];
 
@@ -305,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const uf = cli["UF"] ? cli["UF"].toString().trim() : "";
         const cidade = cli["Cidade"] ? cli["Cidade"].toString() : "";
         const cepJson = normalizeCEPFromJson(cli["CEP"]);
+        const endereco = cli["ENDERECO"] ? cli["ENDERECO"].toString() : ""; // 🔹 NOVO
 
         const ufInput = document.getElementById("uf-destino");
         const cidadeInput = document.getElementById("cidade-destino");
@@ -318,8 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // CEP vindo do JSON (corrigido com zero à esquerda)
         if (cepInput) cepInput.value = cepJson;
 
-        // Endereço ainda em branco (até você colocar no JSON)
-        if (endInput) endInput.value = "";
+        // Endereço vindo do JSON, maiúsculo e sem acento
+        if (endInput) endInput.value = removeAcentos(toUpper(endereco)); // 🔹 NOVO
       });
     });
 
